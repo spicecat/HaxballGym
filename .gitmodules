@@ -1,0 +1,3 @@
+[submodule "packages/ursinaxball"]
+	path = packages/ursinaxball
+	url = https://github.com/spicecat/Ursinaxball.git
