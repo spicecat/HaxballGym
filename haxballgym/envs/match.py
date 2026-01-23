@@ -1,6 +1,6 @@
 from typing import Any, List, Union
 
-import gym.spaces
+import gymnasium.spaces
 import numpy as np
 from ursinaxball import Game
 from ursinaxball.modules import Bot, PlayerHandler
@@ -145,4 +145,4 @@ class Match(Environment):
             )
         )
 
-        self.observation_space = gym.spaces.Box(-np.inf, np.inf, shape=obs_shape)
+        self.observation_space = gymnasium.spaces.Box(-np.inf, np.inf, shape=obs_shape)

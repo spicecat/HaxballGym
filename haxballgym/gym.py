@@ -5,7 +5,7 @@
 from typing import Dict, List, Tuple, Union
 
 import numpy as np
-from gym import Env
+from gymnasium import Env
 
 from haxballgym.envs.match import Match
 
@@ -20,13 +20,18 @@ class Gym(Env):
 
         self._prev_state = None
 
-    def reset(self, return_info=False, save_recording=False) -> Union[List, Tuple]:
+    def reset(self, seed=None, options=None) -> Tuple[List, Dict]:
         """
         The environment reset function.
         When called, this will reset the state of the environment.
         This should be called once when the environment is initialized,
         then every time the `done` flag from the `step()` function is `True`.
         """
+        super().reset(seed=seed)
+        
+        save_recording = False
+        if options and "save_recording" in options:
+            save_recording = options["save_recording"]
 
         self._match.get_reset_state(save_recording)
         state = self._receive_state()
@@ -34,12 +39,10 @@ class Gym(Env):
         self._prev_state = state
 
         obs = self._match.build_observations(state)
-        if return_info:
-            info = {"state": state, "result": self._match.get_result(state)}
-            return obs, info
-        return obs
+        info = {"state": state, "result": self._match.get_result(state)}
+        return obs, info
 
-    def step(self, actions: list[int] | np.ndarray) -> Tuple[List, List, bool, Dict]:
+    def step(self, actions: list[int] | np.ndarray) -> Tuple[List, List, bool, bool, Dict]:
         """
         The step function will send the list of provided actions to the game,
         then advance the game forward by `tick_skip` physics ticks using that action.
@@ -47,7 +50,7 @@ class Gym(Env):
         objects to determine the rewards, next observation, and done signal.
 
         :param actions: An object containing actions, in the correct format
-        :return: A tuple containing (obs, rewards, done, info)
+        :return: A tuple containing (obs, rewards, terminated, truncated, info)
         """
         actions = self._match.parse_actions(actions, self._prev_state)
         actions_all = self._get_all_actions(actions)
@@ -57,13 +60,14 @@ class Gym(Env):
 
         state = self._receive_state()
         obs = self._match.build_observations(state)
-        done = self._match.is_done(state)
-        reward = self._match.get_rewards(state, done)
+        terminated = self._match.is_done(state)
+        truncated = False
+        reward = self._match.get_rewards(state, terminated)
         self._prev_state = state
 
         info = {"state": state, "result": self._match.get_result(state)}
 
-        return obs, reward, done, info
+        return obs, reward, terminated, truncated, info
 
     def _receive_state(self):
         self._match._game_state.update(self._match._game)

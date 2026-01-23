@@ -1,6 +1,6 @@
 from typing import List, Union
 
-import gym.spaces
+import gymnasium.spaces
 import numpy as np
 
 from haxballgym.utils.action_parsers import DiscreteAction
@@ -12,7 +12,7 @@ class DefaultAction(DiscreteAction):
     def __init__(self):
         super().__init__()
 
-    def get_action_space(self) -> gym.spaces.Space:
+    def get_action_space(self) -> gymnasium.spaces.Space:
         return super().get_action_space()
 
     def parse_actions(

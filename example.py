@@ -6,7 +6,7 @@ import haxballgym
 
 game = Game(
     folder_rec="./recordings/",
-    enable_renderer=True,
+    enable_renderer=False,
     enable_vsync=True,
 )
 env = haxballgym.make(game=game)
@@ -17,7 +17,7 @@ while True:
     save_rec = False
     if abs(ep_reward) > 1:
         save_rec = True
-    obs = env.reset(save_recording=save_rec)
+    obs, info = env.reset(options={"save_recording": save_rec})
     obs_1 = obs[0]
     obs_2 = obs[1]
     done = False
@@ -28,7 +28,8 @@ while True:
         actions_1 = env.action_space.sample()
         actions_2 = env.action_space.sample()
         actions = [actions_1, actions_2]
-        new_obs, reward, done, state = env.step(actions)
+        new_obs, reward, terminated, truncated, info = env.step(actions)
+        done = terminated or truncated
         ep_reward += reward[0]
         obs_1 = new_obs[0]
         obs_2 = new_obs[1]

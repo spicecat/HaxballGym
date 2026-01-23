@@ -1,4 +1,4 @@
-import gym.spaces
+import gymnasium.spaces
 import numpy as np
 
 from haxballgym.utils.action_parsers import ActionParser
@@ -21,8 +21,8 @@ class DiscreteAction(ActionParser):
         assert n_bins % 2 == 1, "n_bins must be an odd number"
         self._n_bins = n_bins
 
-    def get_action_space(self) -> gym.spaces.Space:
-        return gym.spaces.MultiDiscrete([self._n_bins] * 2 + [2])
+    def get_action_space(self) -> gymnasium.spaces.Space:
+        return gymnasium.spaces.MultiDiscrete([self._n_bins] * 2 + [2])
 
     def parse_actions(self, actions: np.ndarray, state: GameState) -> np.ndarray:
         actions = actions.reshape((-1, NUM_ACTIONS))

@@ -5,7 +5,7 @@ The action parser.
 from abc import ABC, abstractmethod
 from typing import Any
 
-import gym.spaces
+import gymnasium.spaces
 import numpy as np
 
 from haxballgym.utils.gamestates import GameState
@@ -16,7 +16,7 @@ class ActionParser(ABC):
         pass
 
     @abstractmethod
-    def get_action_space(self) -> gym.spaces.Space:
+    def get_action_space(self) -> gymnasium.spaces.Space:
         """
         Function that returns the action space type.
         It will be called during the initialization of the environment.
