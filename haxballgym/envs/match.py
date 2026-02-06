@@ -72,7 +72,10 @@ class Match(Environment):
             obs = self._obs_builder.build_obs(player, state, self._prev_actions[i])
 
             observations.append(obs)
-
+            
+        if len(observations) == 1:
+            observations = observations[0]
+        
         return observations
 
     def get_rewards(self, state: GameState, done: bool) -> Union[float, List]:
