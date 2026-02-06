@@ -73,9 +73,6 @@ class Match(Environment):
 
             observations.append(obs)
 
-        if len(observations) == 1:
-            observations = observations[0]
-
         return observations
 
     def get_rewards(self, state: GameState, done: bool) -> Union[float, List]:
