@@ -34,7 +34,7 @@ class RandomState(StateSetter):
         game.reset(save_recording)
         width = game.stadium_game.width
         height = game.stadium_game.height
-        ball, *placed = game.stadium.discs
+        ball, *placed = game.stadium_game.discs
 
         ball.position = self.get_valid_position(width, height, ball.radius, placed)
         placed.append(ball)
