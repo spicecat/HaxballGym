@@ -10,7 +10,7 @@ class RandomState(StateSetter):
         self._rng = np.random.default_rng()
 
     def get_valid_position(
-        self, width: int, height: int, radius: int, placed: list[Disc]
+        self, width: float, height: float, radius: float, placed: list[Disc]
     ):
         max_attempts = 100
         for _ in range(max_attempts):
