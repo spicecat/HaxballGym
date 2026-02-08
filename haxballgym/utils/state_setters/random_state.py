@@ -22,7 +22,7 @@ class RandomState(StateSetter):
                 dtype=float,
             )
 
-            for other in placed_discs:
+            for other in placed:
                 if np.linalg.norm(pos - other.position) < (radius + other.radius):
                     break
             else:
