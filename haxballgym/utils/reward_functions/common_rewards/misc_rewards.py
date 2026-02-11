@@ -103,7 +103,7 @@ class AlignBallGoal(RewardFunction):
         self, player: PlayerHandler, state: GameState, previous_action: np.ndarray
     ) -> float:
         ball = state.ball.position
-        pos = player.car_data.position
+        pos = player.disc.position
         protecc = (self.defense_goal.points[0] + self.defense_goal.points[1]) / 2
         attacc = (self.offense_goal.points[0] + self.offense_goal.points[1]) / 2
         if player.team == TeamID.BLUE:
