@@ -1,6 +1,7 @@
 import numpy as np
 from haxballgym.utils.state_setters import StateSetter
 from ursinaxball import Game
+from ursinaxball.common_values import GameState, TeamID
 from ursinaxball.objects.base.disc_object import Disc
 
 
@@ -32,6 +33,8 @@ class RandomState(StateSetter):
 
     def reset(self, game: Game, save_recording: bool):
         game.reset(save_recording)
+        game.state = GameState.PLAYING
+        game.team_kickoff = TeamID.RED if self._rng.random() < 0.5 else TeamID.BLUE
         width = game.stadium_game.width
         height = game.stadium_game.height
         ball, *placed = game.stadium_game.discs
