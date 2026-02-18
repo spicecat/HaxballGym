@@ -21,7 +21,3 @@ That's it! Run `example.py` to see if the installation was successful. The scrip
 ## Recordings
 
 To watch recordings, go to my [HaxBall clone](https://wazarr94.github.io/) and load the recording file.
-
-## Discord
-
-[![Join our Discord server!](https://invidget.switchblade.xyz/TpKPeCe7y6)](https://discord.gg/TpKPeCe7y6)

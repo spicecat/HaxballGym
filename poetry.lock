@@ -627,7 +627,7 @@ develop = true
 
 [package.dependencies]
 msgpack = "^1.1.2"
-numpy = "^2.4.2"
+numpy = "^2.0.2"
 ursina = "^8.3.0"
 
 [package.source]
@@ -637,4 +637,4 @@ url = "packages/ursinaxball"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0.0"
-content-hash = "d5fb4b6978bf2a5ed4b8688922543d5406fa7f50bbd9aadde340bbb220c89dfe"
+content-hash = "d8f3f239ac77df2906abe3995c5cb0844c3549eeed0a44ba621d59bf25bb10ec"
