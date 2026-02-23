@@ -11,6 +11,7 @@ from ursinaxball.objects.base import Disc
 
 class GameState(object):
     def __init__(self, game_object: Game):
+        self.stadium_game = game_object.stadium_game
         self.state = game_object.state
         self.team_kickoff = game_object.team_kickoff
         
