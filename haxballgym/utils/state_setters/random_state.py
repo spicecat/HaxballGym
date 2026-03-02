@@ -33,10 +33,13 @@ class RandomState(StateSetter):
         return pos
 
     def get_random_velocity(self, max_velocity: float = 2.0):
-        return [
-            self._rng.uniform(-max_velocity, max_velocity),
-            self._rng.uniform(-max_velocity, max_velocity),
-        ]
+        return np.array(
+            [
+                self._rng.uniform(-max_velocity, max_velocity),
+                self._rng.uniform(-max_velocity, max_velocity),
+            ],
+            dtype=float,
+        )
 
     def reset(self, game: Game, save_recording: bool):
         game.reset(save_recording)
