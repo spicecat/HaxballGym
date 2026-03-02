@@ -6,8 +6,9 @@ from ursinaxball.objects.base.disc_object import Disc
 
 
 class RandomState(StateSetter):
-    def __init__(self):
+    def __init__(self, red_percent=0.5):
         super().__init__()
+        self.red_percent = red_percent
         self._rng = np.random.default_rng()
 
     def get_valid_position(
@@ -34,7 +35,7 @@ class RandomState(StateSetter):
     def reset(self, game: Game, save_recording: bool):
         game.reset(save_recording)
         game.state = GameState.PLAYING
-        game.team_kickoff = TeamID.RED if self._rng.random() < 0.5 else TeamID.BLUE
+        game.team_kickoff = TeamID.RED if self._rng.random() < self.red_percent else TeamID.BLUE
         width = game.stadium_game.width
         height = game.stadium_game.height
         ball, *placed = game.stadium_game.discs
