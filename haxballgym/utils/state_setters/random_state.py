@@ -11,9 +11,17 @@ class RandomState(StateSetter):
         self.red_percent = red_percent
         self._rng = np.random.default_rng()
 
+    def is_valid_position(
+        self, position: np.ndarray, radius: float, placed: list[Disc]
+    ) -> bool:
+        for other in placed:
+            if np.linalg.norm(position - other.position) < (other.radius + radius):
+                return False
+        return True
+
     def get_random_position(
         self, width: float, height: float, radius: float, placed: list[Disc]
-    ):
+    ) -> np.ndarray:
         max_attempts = 100
         for _ in range(max_attempts):
             pos = np.array(
@@ -24,15 +32,12 @@ class RandomState(StateSetter):
                 dtype=float,
             )
 
-            for other in placed:
-                if np.linalg.norm(pos - other.position) < (radius + other.radius):
-                    break
-            else:
-                return pos
+            if is_valid_position(pos, radius, placed):
+                break
 
         return pos
 
-    def get_random_velocity(self, max_velocity: float = 2.0):
+    def get_random_velocity(self, max_velocity: float = 1.0):
         return np.array(
             [
                 self._rng.uniform(-max_velocity, max_velocity),
