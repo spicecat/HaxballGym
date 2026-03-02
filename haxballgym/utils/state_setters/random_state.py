@@ -6,12 +6,12 @@ from ursinaxball.objects.base.disc_object import Disc
 
 
 class RandomState(StateSetter):
-    def __init__(self, red_percent=0.5):
+    def __init__(self, red_percent: float = 0.5):
         super().__init__()
         self.red_percent = red_percent
         self._rng = np.random.default_rng()
 
-    def get_valid_position(
+    def get_random_position(
         self, width: float, height: float, radius: float, placed: list[Disc]
     ):
         max_attempts = 100
@@ -32,19 +32,29 @@ class RandomState(StateSetter):
 
         return pos
 
+    def get_random_velocity(self, max_velocity: float = 2.0):
+        return [
+            self._rng.uniform(-max_velocity, max_velocity),
+            self._rng.uniform(-max_velocity, max_velocity),
+        ]
+
     def reset(self, game: Game, save_recording: bool):
         game.reset(save_recording)
         game.state = GameState.PLAYING
-        game.team_kickoff = TeamID.RED if self._rng.random() < self.red_percent else TeamID.BLUE
+        game.team_kickoff = (
+            TeamID.RED if self._rng.random() < self.red_percent else TeamID.BLUE
+        )
         width = game.stadium_game.width
         height = game.stadium_game.height
         ball, *placed = game.stadium_game.discs
 
-        ball.position = self.get_valid_position(width, height, ball.radius, placed)
+        ball.position = self.get_random_position(width, height, ball.radius, placed)
+        ball.velocity = self.get_random_velocity()
         placed.append(ball)
 
         for player in game.players:
-            player.disc.position = self.get_valid_position(
+            player.disc.position = self.get_random_position(
                 width, height, player.disc.radius, placed
             )
+            player.disc.velocity = self.get_random_velocity()
             placed.append(player.disc)
