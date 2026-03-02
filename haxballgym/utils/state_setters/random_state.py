@@ -11,34 +11,36 @@ class RandomState(StateSetter):
         self.red_percent = red_percent
         self._rng = np.random.default_rng()
 
-    def is_valid_position(
-        self, position: np.ndarray, radius: float, placed: list[Disc]
-    ) -> bool:
+    def is_valid_position(self, disc: Disc, placed: list[Disc]) -> bool:
         for other in placed:
-            if np.linalg.norm(position - other.position) < (other.radius + radius):
+            if np.linalg.norm(disc.position - other.position) < (
+                other.radius + disc.radius
+            ):
                 return False
         return True
 
-    def get_random_position(
-        self, width: float, height: float, radius: float, placed: list[Disc]
-    ) -> np.ndarray:
+    def randomize_position(
+        self,
+        width: float,
+        height: float,
+        disc: Disc,
+        placed: list[Disc],
+        max_velocity: float = 1.0,
+    ):
         max_attempts = 100
         for _ in range(max_attempts):
-            pos = np.array(
+            disc.position = np.array(
                 [
-                    self._rng.uniform(-width + radius, width - radius),
-                    self._rng.uniform(-height + radius, height - radius),
+                    self._rng.uniform(-width + disc.radius, width - disc.radius),
+                    self._rng.uniform(-height + disc.radius, height - disc.radius),
                 ],
                 dtype=float,
             )
-
-            if is_valid_position(pos, radius, placed):
+            if self.is_valid_position(disc, placed):
                 break
+        placed.append(disc)
 
-        return pos
-
-    def get_random_velocity(self, max_velocity: float = 1.0):
-        return np.array(
+        disc.velocity = np.array(
             [
                 self._rng.uniform(-max_velocity, max_velocity),
                 self._rng.uniform(-max_velocity, max_velocity),
@@ -54,15 +56,8 @@ class RandomState(StateSetter):
         )
         width = game.stadium_game.width
         height = game.stadium_game.height
+
         ball, *placed = game.stadium_game.discs
-
-        ball.position = self.get_random_position(width, height, ball.radius, placed)
-        ball.velocity = self.get_random_velocity()
-        placed.append(ball)
-
+        self.randomize_position(width, height, ball, placed)
         for player in game.players:
-            player.disc.position = self.get_random_position(
-                width, height, player.disc.radius, placed
-            )
-            player.disc.velocity = self.get_random_velocity()
-            placed.append(player.disc)
+            self.randomize_position(width, height, player.disc, placed)
