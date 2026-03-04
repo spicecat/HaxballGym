@@ -33,8 +33,13 @@ class TimeoutCondition(TerminalCondition):
 
 
 class NoTouchTimeoutCondition(TimeoutCondition):
+    def reset(self, initial_state: GameState):
+        super().reset()
+        for p in initial_state.players:
+            p.player_data.number_touch = 0
+        
     def is_terminal(self, current_state: GameState):
-        if any(p.ball_touched for p in current_state.players):
+        if any(p.player_data.number_touch > 0 for p in current_state.players):
             self.steps = 0
             return False
         else:
