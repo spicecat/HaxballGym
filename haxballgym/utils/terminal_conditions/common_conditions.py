@@ -34,7 +34,7 @@ class TimeoutCondition(TerminalCondition):
 
 class NoTouchTimeoutCondition(TimeoutCondition):
     def reset(self, initial_state: GameState):
-        super().reset()
+        super().reset(initial_state)
         for p in initial_state.players:
             p.player_data.number_touch = 0
         
