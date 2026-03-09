@@ -111,15 +111,15 @@ class AlignBallGoal(RewardFunction):
 
         # Align player->ball and net->player vectors
         cosine_similarity_def = np.dot(
-            ball - pos / np.linalg.norm(ball - pos),
-            pos - protecc / np.linalg.norm(pos - protecc),
+            (ball - pos) / np.linalg.norm(ball - pos),
+            (pos - protecc) / np.linalg.norm(pos - protecc),
         )
         defensive_reward = self.defense * cosine_similarity_def
 
         # Align player->ball and player->net vectors
         cosine_similarity_off = np.dot(
-            ball - pos / np.linalg.norm(ball - pos),
-            attacc - pos / np.linalg.norm(attacc - pos),
+            (ball - pos) / np.linalg.norm(ball - pos),
+            (attacc - pos) / np.linalg.norm(attacc - pos),
         )
         offensive_reward = self.offense * cosine_similarity_off
 
